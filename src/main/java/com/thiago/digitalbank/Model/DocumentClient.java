@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 
-@Getter
-@Setter
+
 @Entity
 public class DocumentClient implements Serializable {
 
@@ -22,4 +21,28 @@ public class DocumentClient implements Serializable {
     private String documentFront;
 
     private String documentBack;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDocumentFront() {
+        return documentFront;
+    }
+
+    public void setDocumentFront(String documentFront) {
+        this.documentFront = documentFront;
+    }
+
+    public String getDocumentBack() {
+        return documentBack;
+    }
+
+    public void setDocumentBack(String documentBack) {
+        this.documentBack = documentBack;
+    }
 }
