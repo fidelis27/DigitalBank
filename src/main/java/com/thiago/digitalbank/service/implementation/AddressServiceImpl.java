@@ -19,47 +19,60 @@ public class AddressServiceImpl  implements AddressService {
     @Autowired
     AddressRepository addressRepository;
 
+
+
     @Override
     public Address saveNewAddress(Long id, Address address) {
         Client clientUpdate = clientService.findClientById(id);
 
+        Address addressSalved = addressRepository.save(address);
 
-        System.out.println(clientUpdate);
-        Address enderecoSalvo = addressRepository.save(address);
-
-        clientService.saveAddressClient(clientUpdate, enderecoSalvo);
+        clientService.saveAddressClient(clientUpdate, addressSalved);
         return address;
     }
 
     @Override
     public Page<Address> findAllClients(Pageable pageable) {
-        return null;
+        Page<Address> pageAddress = addressRepository.findAll(pageable);
+        return pageAddress;
     }
 
     @Override
     public Address findAddressById(Long id) {
-        return null;
+        return responseIfExistAddressById(id);
     }
 
     @Override
     public Address findAddressCep(String cep) {
-        return null;
+        return addressRepository.findByCep(cep)
+                .orElseThrow(() -> new SourceNotFound("Not found address by cep: " + cep));
     }
 
     @Override
     public Address updateAddressIfExists(Long id, Address address) {
-        return null;
+
+        Address addressFound = responseIfExistAddressById(id);
+        addressFound.setCep(address.getCep());
+        addressFound.setCity(address.getCity());
+        addressFound.setComplement(address.getComplement());
+        addressFound.setNeighborhood(address.getNeighborhood());
+        addressFound.setState(address.getState());
+        addressFound.setStreet(address.getStreet());
+        addressRepository.save(addressFound);
+        return addressFound;
+
     }
 
     @Override
     public Address responseIfExistAddressById(Long id) {
         return addressRepository.findById(id)
-                .orElseThrow(() -> new SourceNotFound("Não foi encontrado endereco com esse id: " + id));
+                .orElseThrow(() -> new SourceNotFound("Not found address by id: " + id));
     }
 
     @Override
     public void deleteAddressById(Long id) {
-
+        Address addressFound = responseIfExistAddressById(id);
+        addressRepository.delete(addressFound);
 
     }
 }

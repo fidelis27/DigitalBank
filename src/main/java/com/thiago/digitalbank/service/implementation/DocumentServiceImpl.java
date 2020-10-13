@@ -28,14 +28,13 @@ public class DocumentServiceImpl implements DocumentService {
     DocumentRepository documentRepository;
 
     public void saveFilesDocClient(String directory, Long id, MultipartFile fileFront, MultipartFile FileBack) {
-        Client client = clientService.responseIfExistsAddressToClientById(id);
+        Client client = clientService.findClientById(id);
+        Path directoryPath = Paths.get(directory, "client_" + id);
 
-        Path directoryPath = Paths.get(directory, "cliente_" + id);
-
-        gereDiretorioDestinoDocumento(directoryPath, fileFront);
+        createDirectoryDoc(directoryPath, fileFront);
         String directoryFileFront = FindLocaleDoc(directoryPath, fileFront.getOriginalFilename());
 
-        gereDiretorioDestinoDocumento(directoryPath, FileBack);
+        createDirectoryDoc(directoryPath, FileBack);
         String  directoryFileBack= FindLocaleDoc(directoryPath, FileBack.getOriginalFilename());
 
         saveDocClient(client, directoryFileFront, directoryFileBack);
@@ -56,7 +55,7 @@ public class DocumentServiceImpl implements DocumentService {
         return directoryPath.toString() + "\\" + fileName;
     }
 
-    private Path gereDiretorioDestinoDocumento(Path directoryPath, MultipartFile file) {
+    private Path createDirectoryDoc(Path directoryPath, MultipartFile file) {
 
         String nameFileFront = responseNameDirectoryDestinationDoc(directoryPath.toString(), file);
         Path filePathFront= directoryPath.resolve(nameFileFront);

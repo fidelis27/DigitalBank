@@ -1,6 +1,7 @@
 package com.thiago.digitalbank.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thiago.digitalbank.validation.annotations.Age;
 import lombok.*;
 
 import org.hibernate.validator.constraints.br.CPF;
@@ -26,26 +27,27 @@ public class Client   {
     private String name;
 
     @Column(length = 20, nullable = false)
-    @NotEmpty(message = " O Sobrenome do Cliente é obrigatório")
+    @NotEmpty(message = "Last Name is required")
     private String lastName;
 
     @CPF(message = " CPF is invalid")
     @Column(nullable = false)
-    @CPF(message = " Por favor digite um CPF válido")
+    @CPF(message = "please write a CPF valid ")
     private String cpf;
 
     @Email
-    @NotEmpty(message = " O nome do Client é obrigatório")
+    @NotEmpty(message = "Name Client is required")
     @Column(nullable = false)
     private String email;
 
-    @NotEmpty(message = " A CNH do Cliente é obrigatória")
-    @Size(max = 11, min = 11, message = "Digite um CNH válido")
+    @NotEmpty(message = "CNH is required")
+    @Size(max = 11, min = 11, message = "Write a valid CNH")
     @Column(nullable = false)
     private String cnh;
 
-    // @Past(message = "A data informada deve ser menor que a data atual")
+
     @JsonFormat(pattern = "dd-MM-yyyy")
+    @Age(message = "date born is invalid")
     private LocalDate dateBorn;
 
     @OneToOne

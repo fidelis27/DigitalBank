@@ -20,4 +20,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByAddressId(Long id);
 
     Optional<Client> findByAddress(Address address);
+
+
 }
